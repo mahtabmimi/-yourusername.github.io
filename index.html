@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Name — User Researcher</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Cormorant Garamond (display) + DM Sans (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Cormorant Garamond', 'serif'],
+            body: ['DM Sans', 'sans-serif'],
+          },
+          colors: {
+            mint: {
+              50:  '#f0f9f6',
+              100: '#d6f0e8',
+              200: '#aee0d1',
+              300: '#7dcab8',
+              400: '#4aad99',
+              500: '#2e9180',
+              600: '#1e7468',
+              700: '#175c52',
+              800: '#124843',
+              900: '#0d3633',
+            },
+            sand: '#f7f5f0',
+            ink:  '#1a2626',
+          },
+        },
+      },
+    }
+  </script>
+
+  <style>
+    body { font-family: 'DM Sans', sans-serif; }
+    h1, h2, h3, .font-display { font-family: 'Cormorant Garamond', serif; }
+
+    /* Smooth scroll */
+    html { scroll-behavior: smooth; }
+
+    /* Nav link hover underline */
+    .nav-link {
+      position: relative;
+      padding-bottom: 2px;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 1px;
+      background: currentColor;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after { width: 100%; }
+
+    /* Hero fade-in on load */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.9s ease both; }
+    .fade-up-1 { animation-delay: 0.1s; }
+    .fade-up-2 { animation-delay: 0.28s; }
+    .fade-up-3 { animation-delay: 0.46s; }
+    .fade-up-4 { animation-delay: 0.64s; }
+
+    /* Project card hover */
+    .project-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .project-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(26,38,38,0.10); }
+
+    /* Decorative divider */
+    .ornament {
+      display: block;
+      width: 40px; height: 1px;
+      background: #7dcab8;
+      margin: 0 auto 2rem;
+    }
+
+    /* Tag pill */
+    .tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    /* Mobile nav toggle */
+    #mobile-menu { display: none; }
+    #mobile-menu.open { display: flex; }
+  </style>
+</head>
+
+<body class="bg-white text-ink antialiased">
+
+  <!-- ============================================================
+       NAVIGATION
+  ============================================================ -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm border-b border-mint-100">
+    <div class="max-w-6xl mx-auto px-6 md:px-10 flex items-center justify-between h-14">
+
+      <!-- Logo / Name -->
+      <a href="#home" class="font-display text-lg tracking-widest uppercase text-ink font-light">
+        Your Name <!-- ✏️ REPLACE with your name -->
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-light tracking-wide">
+        <a href="#research" class="nav-link text-ink/70 hover:text-ink">Research</a>
+        <a href="#design"   class="nav-link text-ink/70 hover:text-ink">Design</a>
+        <a href="#about"    class="nav-link text-ink/70 hover:text-ink">About</a>
+        <a href="#contact"  class="nav-link text-ink/70 hover:text-ink">Contact</a>
+      </nav>
+
+      <!-- Mobile Hamburger -->
+      <button id="hamburger" class="md:hidden p-2 text-ink/60 hover:text-ink" aria-label="Menu">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5">
+          <line x1="2" y1="6"  x2="20" y2="6"/>
+          <line x1="2" y1="11" x2="20" y2="11"/>
+          <line x1="2" y1="16" x2="20" y2="16"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden flex-col bg-white border-t border-mint-100 px-6 py-4 gap-4 text-sm font-light tracking-wide">
+      <a href="#research" class="text-ink/70 hover:text-ink" onclick="closeMobile()">Research</a>
+      <a href="#design"   class="text-ink/70 hover:text-ink" onclick="closeMobile()">Design</a>
+      <a href="#about"    class="text-ink/70 hover:text-ink" onclick="closeMobile()">About</a>
+      <a href="#contact"  class="text-ink/70 hover:text-ink" onclick="closeMobile()">Contact</a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       HERO
+  ============================================================ -->
+  <section id="home" class="min-h-screen bg-mint-50 flex flex-col justify-center relative overflow-hidden pt-14">
+
+    <!-- Decorative SVG blob — top right (inspired by the paisley motif) -->
+    <div class="absolute top-0 right-0 w-72 md:w-[500px] opacity-20 pointer-events-none select-none" aria-hidden="true">
+      <svg viewBox="0 0 500 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="320" cy="180" rx="180" ry="260" fill="#4aad99" transform="rotate(-20 320 180)" />
+        <ellipse cx="360" cy="400" rx="120" ry="160" fill="#7dcab8" transform="rotate(15 360 400)" />
+        <circle cx="200" cy="100" r="60" fill="#aee0d1"/>
+      </svg>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-6 md:px-10 py-24 md:py-32 grid md:grid-cols-2 gap-12 items-center relative z-10">
+
+      <!-- Left: Text -->
+      <div>
+        <p class="fade-up fade-up-1 tag text-mint-600 mb-4 tracking-widest">
+          User Researcher &nbsp;·&nbsp; Based in the UK <!-- ✏️ Adjust location -->
+        </p>
+
+        <h1 class="fade-up fade-up-2 font-display font-light text-6xl md:text-7xl lg:text-8xl leading-[1.05] text-ink mb-8">
+          Your<br/>Name <!-- ✏️ REPLACE with your name -->
+        </h1>
+
+        <p class="fade-up fade-up-3 text-ink/70 font-light leading-relaxed max-w-md mb-4">
+          With a natural curiosity for how people experience the world, I gather insights to understand users' thoughts, feelings, and behaviours.
+          <!-- ✏️ REPLACE with your bio paragraph 1 -->
+        </p>
+        <p class="fade-up fade-up-3 text-ink/70 font-light leading-relaxed max-w-md mb-10">
+          Translating data into actionable insights and working within multidisciplinary teams to create meaningful and intuitive experiences.
+          <!-- ✏️ REPLACE with your bio paragraph 2 -->
+        </p>
+
+        <div class="fade-up fade-up-4 flex flex-wrap gap-4">
+          <a href="#research" class="inline-flex items-center gap-2 bg-ink text-white px-6 py-3 text-sm tracking-wide font-light hover:bg-mint-700 transition-colors">
+            View Work
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+          <a href="#contact" class="inline-flex items-center gap-2 border border-ink/30 text-ink px-6 py-3 text-sm tracking-wide font-light hover:border-ink transition-colors">
+            Get in Touch
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: Decorative botanical / abstract shape  -->
+      <div class="hidden md:flex justify-end items-center">
+        <!--
+          ✏️ Replace the SVG below with your own decorative image or keep this abstract version.
+          To use an image: <img src="your-image.jpg" class="w-72 rounded-full object-cover" />
+        -->
+        <svg viewBox="0 0 340 420" class="w-72 lg:w-80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Large paisley-inspired teardrop -->
+          <path d="M170 380 C60 340 20 240 40 150 C60 60 120 20 170 20 C220 20 300 60 300 170 C300 280 260 360 170 380Z"
+                fill="#aee0d1" opacity="0.55"/>
+          <path d="M170 360 C80 325 50 235 68 155 C86 70 138 38 170 38 C202 38 272 72 272 168 C272 265 240 340 170 360Z"
+                fill="none" stroke="#4aad99" stroke-width="1.5"/>
+          <!-- Inner teardrop -->
+          <path d="M170 300 C120 280 100 230 110 180 C120 130 148 110 170 110 C192 110 230 130 230 190 C230 250 210 285 170 300Z"
+                fill="#4aad99" opacity="0.3"/>
+          <!-- Dot cluster top -->
+          <circle cx="170" cy="50"  r="5" fill="#4aad99" opacity="0.7"/>
+          <circle cx="150" cy="70"  r="3" fill="#7dcab8" opacity="0.6"/>
+          <circle cx="190" cy="68"  r="3.5" fill="#2e9180" opacity="0.5"/>
+          <circle cx="170" cy="90"  r="2.5" fill="#aee0d1" opacity="0.8"/>
+          <!-- Horizontal rule accent -->
+          <line x1="100" y1="220" x2="240" y2="220" stroke="#7dcab8" stroke-width="0.75" stroke-dasharray="4 4" opacity="0.7"/>
+        </svg>
+      </div>
+
+    </div>
+
+    <!-- Bottom wave -->
+    <div class="absolute bottom-0 left-0 right-0 overflow-hidden leading-[0]" aria-hidden="true">
+      <svg viewBox="0 0 1440 60" preserveAspectRatio="none" class="w-full h-10 md:h-14" fill="white">
+        <path d="M0 60 Q360 0 720 30 Q1080 60 1440 0 L1440 60Z"/>
+      </svg>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       RESEARCH PROJECTS
+  ============================================================ -->
+  <section id="research" class="py-24 md:py-32 bg-white">
+    <div class="max-w-6xl mx-auto px-6 md:px-10">
+
+      <div class="mb-16 md:mb-20">
+        <p class="tag text-mint-500 mb-3 tracking-widest">Selected Work</p>
+        <h2 class="font-display font-light text-5xl md:text-6xl text-ink">Research</h2>
+      </div>
+
+      <!-- Project Grid: 2 columns on desktop, 1 on mobile -->
+      <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
+
+        <!-- ── PROJECT CARD 1 ─────────────────────────── -->
+        <article class="project-card group cursor-pointer border border-ink/8 bg-white overflow-hidden">
+          <!-- Image area -->
+          <div class="aspect-[16/9] bg-mint-100 overflow-hidden relative">
+            <!--
+              ✏️ Replace this placeholder with your project image:
+              <img src="your-project-image.jpg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Project description" />
+            -->
+            <div class="absolute inset-0 flex items-center justify-center text-mint-300 text-sm font-light tracking-widest uppercase">
+              Project Image <!-- ✏️ Replace with <img> tag -->
+            </div>
+          </div>
+
+          <!-- Card body -->
+          <div class="p-6 md:p-8">
+            <div class="flex items-center gap-2 mb-3 flex-wrap">
+              <span class="tag text-ink/40">DVSA &nbsp;|&nbsp; NDA</span> <!-- ✏️ Client / confidentiality -->
+            </div>
+
+            <h3 class="font-display font-light text-2xl md:text-3xl text-ink mb-3 leading-snug">
+              Demonstrating value &amp; impact for a pilot AI tool <!-- ✏️ Project title -->
+            </h3>
+
+            <p class="text-ink/60 font-light text-sm leading-relaxed mb-5">
+              Research to evaluate the impact and usability of an AI content-generation tool for driving theory test materials, working with DVSA, OpenAI, and Microsoft. <!-- ✏️ Short description -->
+            </p>
+
+            <!-- Tags -->
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="tag bg-mint-50 text-mint-700 px-3 py-1 rounded-full">SME Interviews</span>
+              <span class="tag bg-mint-50 text-mint-700 px-3 py-1 rounded-full">Workshops</span>
+              <span class="tag bg-mint-50 text-mint-700 px-3 py-1 rounded-full">Journey Mapping</span>
+              <span class="tag bg-mint-50 text-mint-700 px-3 py-1 rounded-full">Usability Testing</span>
+              <span class="tag bg-mint-50 text-mint-700 px-3 py-1 rounded-full">Data Ethics</span>
+              <span class="tag bg-mint-50 text-mint-700 px-3 py-1 rounded-full">Gen. AI</span>
+              <!-- ✏️ Add/remove tags as needed -->
+            </div>
+
+            <!-- CTA -->
+            <a href="project-1.html" class="inline-flex items-center gap-2 text-sm font-light text-mint-600 hover:text-ink transition-colors">
+              <!-- ✏️ Link to your case study page. If NDA, keep as "#" and add: PASSWORD PROTECTED button style -->
+              View Case Study
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+            </a>
+
+            <!-- Uncomment below for NDA / password protected projects: -->
+            <!--
+            <span class="inline-flex items-center gap-2 text-sm font-light border border-ink/20 text-ink/50 px-4 py-2">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="8" height="6" rx="1"/><path d="M4 5V3.5a2 2 0 014 0V5"/></svg>
+              Password Protected
+            </span>
+            -->
+          </div>
+        </article>
+        <!-- ── END PROJECT CARD 1 ─────────────────────── -->
+
+
+        <!-- ── PROJECT CARD 2 ─────────────────────────── -->
+        <article class="project-card group cursor-pointer border border-ink/8 bg-white overflow-hidden">
+          <div class="aspect-[16/9] bg-sand overflow-hidden relative">
+            <div class="absolute inset-0 flex items-center justify-center text-ink/20 text-sm font-light tracking-widest uppercase">
+              Project Image <!-- ✏️ Replace with <img> tag -->
+            </div>
+          </div>
+          <div class="p-6 md:p-8">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="tag text-ink/40">CLIENT NAME &nbsp;|&nbsp; 2024</span> <!-- ✏️ -->
+            </div>
+            <h3 class="font-display font-light text-2xl md:text-3xl text-ink mb-3 leading-snug">
+              Project Title Goes Here <!-- ✏️ -->
+            </h3>
+            <p class="text-ink/60 font-light text-sm leading-relaxed mb-5">
+              A short description of the project, the problem you were solving, and your role. Keep it to 2–3 sentences. <!-- ✏️ -->
+            </p>
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="tag bg-mint-50 text-mint-700 px-3 py-1 rounded-full">Interviews</span>
+              <span class="tag bg-mint-50 text-mint-700 px-3 py-1 rounded-full">Usability Testing</span>
+              <span class="tag bg-mint-50 text-mint-700 px-3 py-1 rounded-full">Synthesis</span>
+              <!-- ✏️ -->
+            </div>
+            <a href="project-2.html" class="inline-flex items-center gap-2 text-sm font-light text-mint-600 hover:text-ink transition-colors">
+              View Case Study
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+            </a>
+          </div>
+        </article>
+        <!-- ── END PROJECT CARD 2 ─────────────────────── -->
+
+
+        <!-- ── PROJECT CARD 3 ─────────────────────────── -->
+        <article class="project-card group cursor-pointer border border-ink/8 bg-white overflow-hidden">
+          <div class="aspect-[16/9] bg-mint-50 overflow-hidden relative">
+            <div class="absolute inset-0 flex items-center justify-center text-mint-300 text-sm font-light tracking-widest uppercase">
+              Project Image <!-- ✏️ -->
+            </div>
+          </div>
+          <div class="p-6 md:p-8">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="tag text-ink/40">CLIENT NAME &nbsp;|&nbsp; 2024</span>
+            </div>
+            <h3 class="font-display font-light text-2xl md:text-3xl text-ink mb-3 leading-snug">
+              Project Title Goes Here <!-- ✏️ -->
+            </h3>
+            <p class="text-ink/60 font-light text-sm leading-relaxed mb-5">
+              Short project description. Your role, methods, and impact. <!-- ✏️ -->
+            </p>
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="tag bg-mint-50 text-mint-700 px-3 py-1 rounded-full">Discovery</span>
+              <span class="tag bg-mint-50 text-mint-700 px-3 py-1 rounded-full">Co-design</span>
+              <span class="tag bg-mint-50 text-mint-700 px-3 py-1 rounded-full">Affinity Mapping</span>
+            </div>
+            <a href="project-3.html" class="inline-flex items-center gap-2 text-sm font-light text-mint-600 hover:text-ink transition-colors">
+              View Case Study
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+            </a>
+          </div>
+        </article>
+        <!-- ── END PROJECT CARD 3 ─────────────────────── -->
+
+
+        <!-- ── PROJECT CARD 4 ─────────────────────────── -->
+        <article class="project-card group cursor-pointer border border-ink/8 bg-white overflow-hidden">
+          <div class="aspect-[16/9] bg-sand overflow-hidden relative">
+            <div class="absolute inset-0 flex items-center justify-center text-ink/20 text-sm font-light tracking-widest uppercase">
+              Project Image <!-- ✏️ -->
+            </div>
+          </div>
+          <div class="p-6 md:p-8">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="tag text-ink/40">CLIENT NAME &nbsp;|&nbsp; 2023</span>
+            </div>
+            <h3 class="font-display font-light text-2xl md:text-3xl text-ink mb-3 leading-snug">
+              Project Title Goes Here <!-- ✏️ -->
+            </h3>
+            <p class="text-ink/60 font-light text-sm leading-relaxed mb-5">
+              Short project description. Your role, methods, and impact. <!-- ✏️ -->
+            </p>
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="tag bg-mint-50 text-mint-700 px-3 py-1 rounded-full">Survey</span>
+              <span class="tag bg-mint-50 text-mint-700 px-3 py-1 rounded-full">Card Sorting</span>
+              <span class="tag bg-mint-50 text-mint-700 px-3 py-1 rounded-full">Tree Testing</span>
+            </div>
+            <a href="project-4.html" class="inline-flex items-center gap-2 text-sm font-light text-mint-600 hover:text-ink transition-colors">
+              View Case Study
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+            </a>
+          </div>
+        </article>
+        <!-- ── END PROJECT CARD 4 ─────────────────────── -->
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       DESIGN SECTION (optional — mirrors Research above)
+  ============================================================ -->
+  <section id="design" class="py-24 md:py-32 bg-sand">
+    <div class="max-w-6xl mx-auto px-6 md:px-10">
+
+      <div class="mb-16 md:mb-20">
+        <p class="tag text-mint-500 mb-3 tracking-widest">Selected Work</p>
+        <h2 class="font-display font-light text-5xl md:text-6xl text-ink">Design</h2>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+
+        <!-- Design Project 1 -->
+        <article class="project-card group cursor-pointer bg-white border border-ink/8 overflow-hidden">
+          <div class="aspect-square bg-mint-100 overflow-hidden relative">
+            <div class="absolute inset-0 flex items-center justify-center text-mint-300 text-xs font-light tracking-widest uppercase">
+              Image <!-- ✏️ Replace -->
+            </div>
+          </div>
+          <div class="p-5">
+            <h3 class="font-display font-light text-xl text-ink mb-1">Design Project Title</h3> <!-- ✏️ -->
+            <p class="text-ink/50 font-light text-xs leading-relaxed">Brief description</p> <!-- ✏️ -->
+          </div>
+        </article>
+
+        <!-- Design Project 2 -->
+        <article class="project-card group cursor-pointer bg-white border border-ink/8 overflow-hidden">
+          <div class="aspect-square bg-sand border border-ink/5 overflow-hidden relative">
+            <div class="absolute inset-0 flex items-center justify-center text-ink/20 text-xs font-light tracking-widest uppercase">
+              Image <!-- ✏️ Replace -->
+            </div>
+          </div>
+          <div class="p-5">
+            <h3 class="font-display font-light text-xl text-ink mb-1">Design Project Title</h3>
+            <p class="text-ink/50 font-light text-xs leading-relaxed">Brief description</p>
+          </div>
+        </article>
+
+        <!-- Design Project 3 -->
+        <article class="project-card group cursor-pointer bg-white border border-ink/8 overflow-hidden">
+          <div class="aspect-square bg-mint-50 overflow-hidden relative">
+            <div class="absolute inset-0 flex items-center justify-center text-mint-300 text-xs font-light tracking-widest uppercase">
+              Image <!-- ✏️ Replace -->
+            </div>
+          </div>
+          <div class="p-5">
+            <h3 class="font-display font-light text-xl text-ink mb-1">Design Project Title</h3>
+            <p class="text-ink/50 font-light text-xs leading-relaxed">Brief description</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       ABOUT
+  ============================================================ -->
+  <section id="about" class="py-24 md:py-32 bg-white">
+    <div class="max-w-6xl mx-auto px-6 md:px-10 grid md:grid-cols-2 gap-16 items-start">
+
+      <!-- Left: Photo -->
+      <div class="relative">
+        <div class="aspect-[3/4] bg-mint-100 overflow-hidden">
+          <!--
+            ✏️ Replace the placeholder below with your photo:
+            <img src="your-photo.jpg" class="w-full h-full object-cover" alt="Your Name" />
+          -->
+          <div class="absolute inset-0 flex items-center justify-center text-mint-300 text-sm font-light tracking-widest uppercase">
+            Your Photo <!-- ✏️ -->
+          </div>
+        </div>
+        <!-- Decorative offset border -->
+        <div class="absolute -bottom-4 -right-4 w-full h-full border border-mint-200 -z-10"></div>
+      </div>
+
+      <!-- Right: Bio -->
+      <div class="pt-4 md:pt-8">
+        <p class="tag text-mint-500 mb-4 tracking-widest">About</p>
+        <h2 class="font-display font-light text-5xl md:text-6xl text-ink mb-8 leading-tight">
+          Hello, I'm<br/>Your Name <!-- ✏️ REPLACE -->
+        </h2>
+
+        <div class="space-y-4 text-ink/70 font-light leading-relaxed text-[0.95rem] mb-10">
+          <p>
+            Write a paragraph about yourself here — your background, what you specialise in, and what drives you as a user researcher. <!-- ✏️ -->
+          </p>
+          <p>
+            Mention the kinds of organisations you've worked with, or the sectors you're most experienced in. <!-- ✏️ -->
+          </p>
+          <p>
+            You can also include a personal note — something that humanises you and makes you memorable to potential clients or employers. <!-- ✏️ -->
+          </p>
+        </div>
+
+        <!-- Skills / Methods grid -->
+        <div class="border-t border-ink/10 pt-8">
+          <p class="tag text-ink/40 mb-4 tracking-widest">Methods &amp; Skills</p>
+          <div class="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-light text-ink/60">
+            <span>User Interviews</span>
+            <span>Usability Testing</span>
+            <span>Survey Design</span>
+            <span>Journey Mapping</span>
+            <span>Affinity Mapping</span>
+            <span>Card Sorting</span>
+            <span>Workshop Facilitation</span>
+            <span>Contextual Enquiry</span>
+            <span>Accessibility Research</span>
+            <span>Data Ethics</span>
+            <!-- ✏️ Add/remove as needed -->
+          </div>
+        </div>
+
+        <!-- Download CV -->
+        <div class="mt-10">
+          <a href="cv.pdf" download class="inline-flex items-center gap-2 border border-ink/30 text-ink px-6 py-3 text-sm tracking-wide font-light hover:bg-ink hover:text-white transition-colors">
+            <!-- ✏️ Place your CV PDF named "cv.pdf" alongside index.html -->
+            Download CV
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 2v7M4 7l3 3 3-3M2 11h10"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       CONTACT
+  ============================================================ -->
+  <section id="contact" class="py-24 md:py-32 bg-ink text-white relative overflow-hidden">
+
+    <!-- Decorative background shape -->
+    <div class="absolute top-0 right-0 w-80 h-80 opacity-5 pointer-events-none" aria-hidden="true">
+      <svg viewBox="0 0 320 320" fill="none">
+        <circle cx="160" cy="160" r="140" stroke="white" stroke-width="1"/>
+        <circle cx="160" cy="160" r="100" stroke="white" stroke-width="0.5"/>
+        <circle cx="160" cy="160" r="60"  stroke="white" stroke-width="0.5"/>
+      </svg>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-6 md:px-10 relative z-10">
+      <div class="max-w-xl">
+        <p class="tag text-mint-400 mb-4 tracking-widest">Get in Touch</p>
+        <h2 class="font-display font-light text-5xl md:text-6xl text-white mb-6 leading-tight">
+          Let's work<br/>together
+        </h2>
+        <p class="text-white/60 font-light leading-relaxed mb-10">
+          I'm open to freelance projects, permanent roles, and collaborations. If you're looking for a user researcher who brings both rigour and empathy to their work, I'd love to hear from you. <!-- ✏️ -->
+        </p>
+
+        <div class="space-y-4">
+          <a href="mailto:hello@yourname.com" class="flex items-center gap-3 text-mint-300 hover:text-white transition-colors font-light">
+            <!-- ✏️ REPLACE with your email -->
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="4" width="14" height="10" rx="1.5"/><path d="M2 5.5l7 5 7-5"/></svg>
+            hello@yourname.com
+          </a>
+          <a href="https://linkedin.com/in/yourhandle" target="_blank" rel="noopener" class="flex items-center gap-3 text-mint-300 hover:text-white transition-colors font-light">
+            <!-- ✏️ REPLACE with your LinkedIn URL -->
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="2" width="14" height="14" rx="2"/><path d="M6 8v5M6 6v.5M9 13v-3a1.5 1.5 0 013 0v3M9 8v5"/></svg>
+            LinkedIn
+          </a>
+          <a href="https://read.cv/yourhandle" target="_blank" rel="noopener" class="flex items-center gap-3 text-mint-300 hover:text-white transition-colors font-light">
+            <!-- ✏️ Optional: read.cv or similar -->
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="2" width="12" height="14" rx="1.5"/><line x1="6" y1="6" x2="12" y2="6"/><line x1="6" y1="9" x2="12" y2="9"/><line x1="6" y1="12" x2="9"  y2="12"/></svg>
+            read.cv
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer class="py-6 bg-ink border-t border-white/10 text-white/30 text-xs font-light">
+    <div class="max-w-6xl mx-auto px-6 md:px-10 flex flex-col md:flex-row justify-between gap-2">
+      <span>© <span id="year"></span> Your Name. All rights reserved.</span> <!-- ✏️ -->
+      <span>Design &amp; code — built with Tailwind CSS</span>
+    </div>
+  </footer>
+
+
+  <!-- ============================================================
+       SCRIPTS
+  ============================================================ -->
+  <script>
+    // Dynamic year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile nav toggle
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+    function closeMobile() { mobileMenu.classList.remove('open'); }
+
+    // Intersection Observer for fade-in on scroll (project cards)
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.project-card, #about .relative').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+      observer.observe(el);
+    });
+  </script>
+
+</body>
+</html>
